@@ -13,11 +13,11 @@ const StudentCard = ({profile, name, desc, link1, link2, img}) => {
         <h1><a href="#">{name}</a></h1>
         <p>{desc}</p>
         <div className="flex">
-          <div className="eth">
+          {/* <div className="eth">
             <Link to='/'>
             <button className='trview_more p_button'>Profile</button>
             </Link>
-          </div>
+          </div> */}
           <div className="days">
           {/* <Link to='/'>
             <button>Open</button>
