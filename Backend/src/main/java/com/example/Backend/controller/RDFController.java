@@ -31,9 +31,9 @@ public class RDFController {
 
         String id = newRDF.getStudentId();
 
-        Student std = srepo.findByEmail(id);
-        String newId = std.getId();
-        Optional<RequestDForm> check = rdfrepo.findByStudentId(newId);
+//        Student std = srepo.findByEmail(id);
+//        String newId = std.getId();
+        Optional<RequestDForm> check = rdfrepo.findByStudentId(id);
 
         if(check.isPresent())
         {
@@ -48,16 +48,16 @@ public class RDFController {
         else {
             newRDF.setRdfId(UUID.randomUUID().toString().split("-")[0]);
 
-            newRDF.setStudentId(newId);
+            newRDF.setStudentId(id);
 
             rdfs.saveRdf(newRDF);
             return ResponseEntity.ok("Form submitted successfully");
         }
     }
 
-    @GetMapping("/getRDF/{rdfid}")
-    public ResponseEntity<RequestDForm> getRDF(@PathVariable("rdfid") String rdfId) {
-        Optional<RequestDForm> form = rdfrepo.findById(rdfId);
+    @GetMapping("/getRDF/{sid}")
+    public ResponseEntity<RequestDForm> getRDF(@PathVariable("sid") String sId) {
+        Optional<RequestDForm> form = rdfrepo.findByStudentId(sId);
         if (!form.isPresent()) {
             return ResponseEntity.notFound().build();
         }
@@ -67,7 +67,7 @@ public class RDFController {
 
     @PutMapping("/editRDF/{rdfid}")
     public ResponseEntity<String> updateRDF(@PathVariable("rdfid") String rdfId, @RequestBody RequestDForm updatedRDF) {
-        Optional<RequestDForm> form = rdfrepo.findById(rdfId);
+        Optional<RequestDForm> form = rdfrepo.findByStudentId(rdfId);
         if (!form.isPresent()) {
             return ResponseEntity.notFound().build();
         }

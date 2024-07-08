@@ -23,6 +23,7 @@ import axios from 'axios';
 import { useAuth } from '../../AuthContext';
 import Navbar from '../Layout/Navbar/navbar';
 import '../Layout/Navbar/navbar.css'
+import NewSBar from '../CommonPage/UI/Sidebar/NewSBar';
 
 const MainGuideDashboard = () => {
 
@@ -33,7 +34,7 @@ const MainGuideDashboard = () => {
         <div className='d-flex'>
         {/* <SidebarOm sidebarData={GuideSidebar} /> */}
         {/* <SidebarG/> */}
-        <Sidebar sidebarData={guidebardata}/>
+        <NewSBar sidebarData={guidebardata}/>
         <div>
           <Routes>
           <Route path="/" element={<GuideDashboard />} />
@@ -41,8 +42,8 @@ const MainGuideDashboard = () => {
           <Route path="/ongoing" element={<OngoingGuideDissertation />} />
           <Route path="/pastStudents" element={<StudentMentored />} />
           <Route path="/edit" element={<EditGuide />} />
-          <Route path={`/ongoing/allottask/:stduentid`} element={<AllotTask />}></Route>
-          <Route path={`/ongoing/allottask/:studentid/alloted`} element={<AllotedTasks />}></Route>
+          <Route path={`/ongoing/allottask/:studentId`} element={<AllotTask />}></Route>
+          <Route path={`/ongoing/allottask/:studentId/alloted`} element={<AllotedTasks />}></Route>
           <Route path={`/ongoing/allottask/:studentid/update/:taskid`} element={<UpdateAllotedTask />}></Route>
         </Routes>
         </div>

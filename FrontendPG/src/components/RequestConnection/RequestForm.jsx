@@ -2,13 +2,18 @@ import React, { useState } from 'react';
 import './RequestForm.css';
 import { CiEdit } from "react-icons/ci";
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
 
 const RequestForm = () => {
-    const [formData, setFormData] = useState({ studentId: '', bname: '', dissertationName: '', dissertationDesc: '', stdResult: '', qualification: '' });
+    const { sid } = useParams();
+    console.log("id from params 1st console log  : ",sid);
+
+    const [formData, setFormData] = useState({ studentId: sid,stdemail:'', bname: '', dissertationName: '', dissertationDesc: '', stdResult: '', qualification: '' });
     const [submitMessage, setSubmitMessage] = useState('');
     const [isEditing, setIsEditing] = useState(false);
     const [editId, setEditId] = useState('');
 
+   
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
@@ -20,11 +25,17 @@ const RequestForm = () => {
             if (isEditing) {
                 response = await axios.put(`http://localhost:8080/rdfActions/editRDF/${editId}`, formData);
             } else {
+                console.log(formData);
+                console.log("ID from the params in submit function : ",sid);
+                setFormData(formData);
+
+                console.log("FORMDATA WALA STUDENT ID : ",formData.studentId);
+                console.log("NEW WALA : ",formData);
                 response = await axios.post('http://localhost:8080/rdfActions/addRDF', formData);
             }
             console.log('Response:', response.data);
             setSubmitMessage(response.data);
-            setFormData({ studentId: '', bname: '', dissertationName: '', dissertationDesc: '', stdResult: '', qualification: '' }); // Reset form data
+            setFormData({ studentId: '',stdemail:'', bname: '', dissertationName: '', dissertationDesc: '', stdResult: '', qualification: '' }); // Reset form data
             setIsEditing(false);
         } catch (error) {
             console.error('Error submitting form:', error);
@@ -32,21 +43,32 @@ const RequestForm = () => {
     };
 
     const handleEditClick = async (id) => {
+        //this is student id
         setIsEditing(true);
         try {
             const response = await axios.get(`http://localhost:8080/rdfActions/getRDF/${id}`);
             const latestSubmission = response.data;
-            setFormData(latestSubmission);
+            console.log("LATEST : ",latestSubmission);
+             setFormData(latestSubmission);
+
+            // const stdid = response.data.studentId;
+
+            const studentResponse = await axios.get(`http://localhost:8080/api/auth/student/getuseremail/${id}`);
+            const newdata = await axios.get(`http://localhost:8080/api/auth/student/getstd/${studentResponse.data}`);
+            const studentData = newdata.data;
+            console.log("STUDENT : ",studentData);
+
+           
             setEditId(id);
 
-const stdid = response.data.studentId;
-            const studentResponse = await axios.get(`http://localhost:8080/api/auth/student/${stdid}`);
-                    const studentData = studentResponse.data;
-                    setFormData(prevState => ({
-                        ...prevState,
-                        bname: studentData.branch ,
-                        studentId : studentData.email
-                    }));
+            setFormData(prevState => ({
+                ...prevState,
+                 // Ensure the initial value is defined
+                bname: studentData.branch || '', // Ensure the initial value is defined
+                studentId : id, // Ensure the initial value is defined
+                stdemail : studentData.email || '', // Ensure the initial value is defined
+            }));
+            console.log("FORM : ",formData);
         } catch (error) {
             console.error('Error loading latest submission:', error);
         }
@@ -57,12 +79,12 @@ const stdid = response.data.studentId;
             <div className='req-card'>
                 <h1>Request Your Dissertation</h1>
                 <div className='req-btn-cont'>
-                    <button className='btn req-edit-btn' onClick={() => handleEditClick("9e78717b")}>Edit <CiEdit /></button>
+                <button className='btn req-edit-btn' onClick={() => handleEditClick(sid)}>Edit <CiEdit /></button>
                 </div>
                 <hr></hr>
                 <form onSubmit={handleSubmit}>
                     <label className='form-label'>Email of the Student : </label>
-                    <input type="text" name="studentId" id="studentId" className='form-control' required value={formData.studentId} onChange={handleChange} disabled={isEditing} />
+                    <input type="text" name="stdemail" id="stdemail" className='form-control' required value={formData.stdemail} onChange={handleChange} disabled={isEditing} />
 
                     <label className='form-label'>Branch Name : </label>
                     <input type="text" name="bname" id="bname" className='form-control' required value={formData.bname} onChange={handleChange} />

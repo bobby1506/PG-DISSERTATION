@@ -7,6 +7,8 @@ import Photo1 from '../../images/photo1.png';
 import Lottie from 'react-lottie';
 import animationData from './Student.json';
 import { useEffect, useState } from "react";
+import axios from "axios";
+import { useAuth } from '../../../../AuthContext';
 
 const Profile = () => {
   const [tasks, setTasks] = useState([]);
@@ -14,9 +16,14 @@ const Profile = () => {
   const [progress, setProgress] = useState([]);
   const [completeTasks, setCompleteTasks] = useState(0);
   const [totalTasks, setTotalTasks] = useState(0);
-  const [credits, setCredits] = useState(0);
-  const [totalCredits, setTotalCredits] = useState(0);
+  const [credits,setCredits]=useState(0);
+  const [totalCredits,setTotalCredits]=useState(0);
+  const [studentDetails , setStudentDetails] = useState({});
+
   const { studentid } = useParams();
+  const{userRole} = useAuth();
+  console.log("Role : ",userRole);
+  console.log("student id coming from dashboard : ",studentid);
   const MyLottieAnimation = () => {
     const defaultOptions = {
       loop: true,
@@ -29,6 +36,54 @@ const Profile = () => {
     return <Lottie options={defaultOptions} />;
   };
 
+  useEffect(() => {
+    fetchStudent();
+  }, [studentid]);
+
+  const fetchStudent = async()=>{
+    try
+    {
+      console.log("Checking id : ",studentid);
+      const dissresp = await axios.get(`http://localhost:8080/api/auth/dissertations/getmydissertation/${studentid}`);
+      console.log(dissresp.data);
+
+      const studentval = dissresp.data.studentId;
+      console.log("STUDENT FROM DISSERTATION : ",studentval);
+
+      const stdresp = await axios.get(`http://localhost:8080/api/auth/student/getmongoid/${studentval}`);
+      console.log(stdresp.data);
+
+      
+
+      // Calculate end date
+const endDate = new Date(
+  new Date(studentDetails.dstart).getTime() + 365 * 24 * 60 * 60 * 1000
+);
+
+// Calculate difference in milliseconds between end date and today's date
+const timeDifference = endDate.getTime() - new Date().getTime();
+
+// Convert milliseconds to days
+const daysRemaining = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+console.log("TIME : ",daysRemaining);
+
+setStudentDetails({
+  name : stdresp.data.name,
+  branch : stdresp.data.branch,
+  dname : dissresp.data.dissertationName,
+  ddesc : dissresp.data.dissertationDesc,
+  dstart : dissresp.data.drtstartDate,
+  dend : endDate,
+  drem : daysRemaining,
+  image : stdresp.data.image_url
+});
+
+    }
+    catch(error)
+    {
+      console.log("Error while fetching student details in common page dashboard :", error);
+    }
+  };
 
 
   const day = 75;
@@ -62,8 +117,11 @@ const Profile = () => {
 
         const filteredNotes = data.filter(item => {
           if (item.notes) {
+            // const noteDate = new Date(item.date);
+            // return formattedDateForComparison === noteDate.toISOString().slice(0, 10);
             const noteDate = new Date(item.date);
-            return formattedDateForComparison === noteDate.toISOString().slice(0, 10);
+            noteDate.setDate(noteDate.getDate() - 1); // Subtract one day
+            eventDates.push(noteDate.toDateString());
           }
           return false;
         }).slice(0, 3);
@@ -136,7 +194,16 @@ const Profile = () => {
   return <div className="common-pg-contents">
     <nav aria-label="breadcrumb">
       <ol className="breadcrumb">
-        <li className="breadcrumb-item"><a href="#">Student</a></li>
+        <li className="breadcrumb-item">
+          {/* <Link to={`/studentdashboard/${studentid}`}>Student</Link> */}
+          { userRole === 'guide' ? (
+                            <Link to="#">Student</Link>
+
+                        ) : (
+                          <Link to={`/studentdashboard/${studentid}`}>Student</Link>
+
+                        )}
+          </li>
         <li className="breadcrumb-item active" aria-current="page">Dissertation</li>
       </ol>
     </nav>
@@ -144,21 +211,24 @@ const Profile = () => {
 
       <div className=' common-pg-project-div row'>
         <div className=" common-pg-student-name col-sm-12 col-md-4 col-lg-4">
-          <div className="common-pg-profile-img"><img src={Photo1} alt="" className="common-pg-profile-pic" /></div>
+          <div className="common-pg-profile-img"><img src={studentDetails.image} alt="" className="common-pg-profile-pic" /></div>
           <div className="common-pg-profile-detail">
-            <h4>Shruti Patel</h4>
-            <p id="common-pg-field">Computer Science and Engineering</p>
+            <h4>{studentDetails.name}</h4>
+            <p id="common-pg-field">{studentDetails.branch}</p>
             <p id="common-pg-college">Maharaja Sayajirao University</p>
           </div>
 
         </div>
-        <div className="common-pg-project-overviews col-sm-12 col-md-2 col-lg-2">Project: <p id="common-pg-project-name">Lorem ipsum dolor sit amet consectetur adipisicing.</p></div>
+
+        
+
+        <div className="common-pg-project-overviews col-sm-12 col-md-2 col-lg-2">Project: <p id="common-pg-project-name">{studentDetails.dname}</p></div>
         <div className="common-pg-project-overviews col-sm-12 col-md-2 col-lg-2">
           <div className="common-pg-calender-icon">
             <span className="common-pg-handle-one"></span>
             <span className="common-pg-handle-two"></span>
             <div className="common-pg-block"></div>
-            <div className="common-pg-day-left">75</div>
+            <div className="common-pg-day-left">{studentDetails.drem}</div>
           </div>
           <p>days remaining</p>
         </div>
@@ -167,9 +237,22 @@ const Profile = () => {
       </div>
       <div className=' common-pg-additional-div'>
         <div className=" common-pg-project-details">
-          <p>Description </p>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde voluptatem repellendus eos ab excepturi rerum facilis vero quam quisquam ratione. Suscipit eligendi quis sed nostrum iure dolor optio rerum quae quam dolore earum quidem ut quas blanditiis repudiandae voluptatibus, nobis est explicabo totam vitae beatae cupiditate alias dolores accusamus. Vitae sequi ducimus ratione corporis asperiores fugit suscipit nemo iure alias. Voluptatem vel magni, necessitatibus maxime aliquam asperiores doloremque cum dolorem nesciunt et assumenda? Ipsam nulla similique veritatis consequatur, sapiente et adipisci corporis doloremque rerum eum delectus. Laboriosam natus fuga modi repellendus error magnam maxime eveniet architecto atque totam molestiae repellat, quam, quo sapiente. Distinctio, libero cupiditate minus quam adipisci itaque accusantium consectetur tempora veritatis. Quo beatae deserunt voluptate tenetur quia non dolorum possimus. Iste voluptates atque aperiam? Commodi, necessitatibus! Ad consequatur neque, rerum voluptates impedit modi vitae dignissimos alias culpa mollitia magni laborum beatae sunt, eveniet distinctio fuga. Veniam, deserunt!</p>
-          <p><span>Start Date:</span> <span>21 feb 2024</span> <span>End Date: </span> <span>21 feb 2024</span></p>
+          <p style={{fontWeight:"bold"}}>Description </p>
+          <p>{studentDetails.ddesc}</p>
+          <p><span style={{fontWeight:"bold"}}>Start Date:</span> <span>{new Date(studentDetails.dstart).toLocaleDateString('en-US', {
+                        day: 'numeric',
+                        month: 'long',
+                        year: 'numeric'
+                      })}&nbsp;&nbsp;&nbsp;</span> <span style={{fontWeight:"bold"}}>End Date: </span>{" "}
+                      <span>
+                        {new Date(
+                          new Date(studentDetails.dstart).getTime() + 365 * 24 * 60 * 60 * 1000
+                        ).toLocaleDateString("en-US", {
+                          day: "numeric",
+                          month: "long",
+                          year: "numeric"
+                        })}
+                      </span></p>
         </div>
         <div className="common-pg-task-details row">
           <div className=" common-pg-overall-progress col-sm-12 col-md-6 col-lg-6">

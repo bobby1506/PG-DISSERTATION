@@ -138,7 +138,8 @@
 
 import React from 'react';
 import './Guidecard.css';
-import { Link } from 'react-router-dom';
+
+import  { Link } from "react-router-dom";
 
 const GuideCard = () => {
   // Sample data for demonstration
@@ -174,16 +175,16 @@ const GuideCard = () => {
       <h2>Our Experts</h2>
       <div className="trContents">
         {researchData.map((research) => (
-          <div className="trContent" key={research.id}>
+          <div className="trContent expert-main" key={research.id}>
             <img src={research.image} alt={`Research ${research.id}`} className="research-image" />
             <p> {research.author}</p>
             <p>{research.guide}</p>
           </div>
         ))}
       </div>
-      <button className="trview_more">
-        <Link to="/experts">View More</Link>
-      </button>
+      <div className='trview_more'>
+      <Link to="/requestguidepage"><button className='trview_more'>View More</button></Link>
+      </div>
     </div>
   );
 };

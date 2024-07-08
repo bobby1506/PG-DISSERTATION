@@ -2,9 +2,12 @@ package com.example.Backend.controller;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import com.example.Backend.model.User;
 import com.example.Backend.repository.StudentRepository;
+import com.example.Backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,6 +30,9 @@ public class StudentController {
 
     @Autowired
     private StudentRepository srepo;
+
+    @Autowired
+    private UserRepository urepo;
 
  
     @PostMapping
@@ -66,8 +72,12 @@ public ResponseEntity<Map<String, Boolean>> checkStudentEmail(@PathVariable Stri
    {
        Optional<Student> newstd = srepo.findById(stdId);
 
-       Student check = newstd.get();
-       return check.getEmail();
+       if(newstd.isPresent())
+       {
+           Student check = newstd.get();
+           return check.getEmail();
+       }
+       return "No student , no email";
    }
 
 
@@ -75,15 +85,89 @@ public ResponseEntity<Map<String, Boolean>> checkStudentEmail(@PathVariable Stri
     @GetMapping("/givenamebranch/{stdid}")
     public ResponseEntity<?> give(@PathVariable("stdid") String stdId)
     {
-        Optional<Student> std = srepo.findById(stdId);
+        Optional<User> std = urepo.findById(stdId);
 
         if (std.isPresent())
         {
-            return ResponseEntity.ok(std.get());
+            String mail = std.get().getEmail();
+            Student student = srepo.findByEmail(mail);
+            return ResponseEntity.ok(student);
         }
         else {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.ok("No data");
         }
+    }
+
+    //get email of user who is student from user table
+    @GetMapping("/getuseremail/{stdid}")
+    public String getuemail(@PathVariable("stdid") String stdId)
+    {
+        Optional<User> u = urepo.findById(stdId);
+
+        if(u.isPresent())
+        {
+            User newUser = u.get();
+            return newUser.getEmail();
+        }
+
+        return "no email";
+    }
+
+    //get the std by email from student table
+    @GetMapping("/getstd/{email}")
+    public Student getfromemail(@PathVariable("email") String email)
+    {
+        Student std = srepo.findByEmail(email);
+
+        return std;
+    }
+
+    //get student by mongo id itself
+    @GetMapping("/getmongoid/{stdid}")
+    public ResponseEntity<?> getstudentbymongo(@PathVariable("stdid") String stdId)
+    {
+        Optional<User> user = urepo.findById(stdId);
+System.out.println("SDFSVSV");
+        if(user.isPresent())
+        {
+            System.out.println("jldjlj");
+            String email = user.get().getEmail();
+
+            Student std = srepo.findByEmail(email);
+            System.out.println("bnvxbv");
+            return new ResponseEntity<Student>(std, HttpStatus.OK);
+        }
+        return new ResponseEntity<>("NOT AVAILABLE",HttpStatus.OK);
+    }
+
+    @PutMapping("/editprofile/{stdid}")
+    public ResponseEntity<String> editstudent(@PathVariable("stdid") String stdId,@RequestBody Student student)
+    {
+        Optional<Student> std = srepo.findById(stdId);
+
+            if(std.isPresent())
+            {
+                Student newstd = std.get();
+                newstd.setName(student.getName());
+                newstd.setPhoneNumber(student.getPhoneNumber());
+                srepo.save(newstd);
+
+                return ResponseEntity.ok("Profile updated successfully");
+            }
+return  ResponseEntity.ok("Profile not found ");
+    }
+
+    @GetMapping("/getuserid/{email}")
+            public String getuserid(@PathVariable("email") String mail)
+    {
+        Optional<User> u = urepo.findByEmail(mail);
+
+        if(u.isPresent())
+        {
+            return u.get().getId();
+        }
+
+        return "No user";
     }
 }
 
