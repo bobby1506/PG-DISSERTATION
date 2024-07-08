@@ -13,10 +13,10 @@ export default function Schedule() {
   const [task, setTasks] = useState([]);
 
 
-  const [eventDetails, setEventDetails] = useState({ title: '', date: '', From: '', to: '',description: '' });
+  const [eventDetails, setEventDetails] = useState({ title: '', date: '', From: '', to: '', description: '' });
   const { studentid, taskId } = useParams();
   const [events, setEvents] = useState([]);
-  
+
   const formattedDate = selectedDay.toLocaleDateString(undefined, {
     day: 'numeric',
     month: 'long',
@@ -140,7 +140,7 @@ export default function Schedule() {
         console.log('Event added successfully!');
         setSelectedDay(new Date());
         await fetchEvents(new Date());
-        setEventDetails({title: '', date: '', From: '', to: '',description: '' });
+        setEventDetails({ title: '', date: '', From: '', to: '', description: '' });
       } else {
         console.error('Failed to add event');
       }
@@ -156,7 +156,7 @@ export default function Schedule() {
 
     try {
       const nextDay = new Date(selectedDay);
-nextDay.setDate(selectedDay.getDate() + 1);
+      nextDay.setDate(selectedDay.getDate() + 1);
       const response = await fetch(`http://localhost:8080/${studentid}/studentguide/schedule/notes`, {
         method: 'POST',
         headers: {
@@ -182,10 +182,10 @@ nextDay.setDate(selectedDay.getDate() + 1);
 
 
 
-   const handleInputChange = (e) => {
-     const { name, value } = e.target;
-     setEventDetails({ ...eventDetails, [name]: value });
-   };
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setEventDetails({ ...eventDetails, [name]: value });
+  };
 
 
   return (

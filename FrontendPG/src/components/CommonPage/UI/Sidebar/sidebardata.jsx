@@ -29,7 +29,7 @@ export const guidebardata = [
     ],
   },
   { path: "/mentorprofile/ongoing", text: "Ongoing ", icon: <FaIcons.FaChartBar /> },
-  { path: "/studentguide/edit", text: "edit", icon: <FaIcons.FaCalendar /> }
+  // { path: "/studentguide/edit", text: "edit", icon: <FaIcons.FaCalendar /> }
 
 ];
 
