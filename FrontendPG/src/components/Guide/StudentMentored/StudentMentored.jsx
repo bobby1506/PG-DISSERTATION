@@ -41,6 +41,7 @@ const StudentMentored = () => {
  };
  
  return (
+   <div className="common-pg-contents">
     <div id="New_request">
        <h2>Student Mentored</h2>
        <div className="new_requests">
@@ -66,7 +67,7 @@ const StudentMentored = () => {
              </div>
           )}
        </div>
-    </div>
+    </div></div>
  );
  
 };

@@ -5,9 +5,10 @@
   }
   
   .sd-main-bg {
-    background-color: var(--primary-color);
+    /* background-color: var(--primary-color); */
     display: flex;
     padding: 0px;
+    height: fit-content;
   }
   
   .sd-sidebar {
@@ -58,12 +59,13 @@
     margin-right: 0%;
   }
   
-  .sd-main-content {
+  /* .sd-main-content {
     background-color: var(--border-color);
     color: black;
-    width: 80%;
+    width: 80vw;
     height: max-content;
-  }
+    border: 1px solid black;
+  } */
   
   .sd-addressing {
     background-color: white;
@@ -85,7 +87,7 @@
   }
   
   .sd-status {
-    background-color: var(--border-color);
+    /* background-color: var(--secondary-color-1); */
     color: black;
     padding: 15px;
     display: flex;
@@ -93,11 +95,12 @@
     align-items: center;
     width: auto;
     height: 30%;
+    margin-top: 3rem;
   }
   
   .sd-step-wizard-list {
     background-color: #F5F5F5;
-    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 5px 10px var(--secondary-color-1);
     list-style-type: none;
     border-radius: 10px;
     display: flex;
@@ -209,6 +212,8 @@
     text-align: left;
     margin: 10px;
     border-radius: 10px;
+    width: 100%;
+    border: 1px solid var(--secondary-color-1);
   }
   
   .sd-notification {
@@ -216,7 +221,7 @@
     flex-direction: column;
     isolation: isolate;
     position: relative;
-    width: auto;
+    /* width: auto; */
     /* max-width: 18rem; */
     height: auto;
     background: white;
@@ -408,3 +413,8 @@
     transition:all .5s ease;
   }
   
+
+  .sd-main{
+    margin-top: 2rem;
+    display: flex;
+  }

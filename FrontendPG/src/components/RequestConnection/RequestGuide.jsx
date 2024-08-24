@@ -2,23 +2,23 @@ import React, { useEffect, useState } from "react";
 import "./RequestGuide.css";
 import img1 from "../../assests/techo-home.png";
 import axios from "axios";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../AuthContext";
 
 const RequestGuide = () => {
     const [submitMessage, setSubmitMessage] = useState('');
     const [successGuide, setSuccessGuide] = useState('');
     const [guides, setGuides] = useState([]);
-    const [sendSuccess,setSendSuccess]=useState(false);
-    const [sendError,setSendError]=useState(false);
-    const [notification,setNotification]=useState({});
+    const [sendSuccess, setSendSuccess] = useState(false);
+    const [sendError, setSendError] = useState(false);
+    const [notification, setNotification] = useState({});
 
     const navigate = useNavigate();
 
-    const{authenticated, id , useremail} = useAuth();
+    const { authenticated, id, useremail } = useAuth();
     console.log(authenticated);
-    console.log("ID FROM PARAMS : ",id);
-    console.log("MAIL CHECK : ",useremail);
+    console.log("ID FROM PARAMS : ", id);
+    console.log("MAIL CHECK : ", useremail);
 
     //const stdid = id;
 
@@ -36,7 +36,7 @@ const RequestGuide = () => {
     //     // console.log("ID:", id);
     //     fetchGuides();
     // }, [authenticated, id]);
-    
+
     const fetchGuides = async () => {
         try {
             const response = await axios.get('http://localhost:8080/api/auth/guide');
@@ -60,12 +60,12 @@ const RequestGuide = () => {
         try {
 
             const std = await axios.get(`http://localhost:8080/api/auth/student/getuserid/${useremail}`);
- const stdid = std.data;
- console.log("Check : ",stdid);
-console.log("Hello from handle p1");
+            const stdid = std.data;
+            console.log("Check : ", stdid);
+            console.log("Hello from handle p1");
             const rdf = await axios.get(`http://localhost:8080/rdfActions/getrdf/from/${stdid}`);
             const rdfresponse = rdf.data;
-            console.log("RDF : ",rdfresponse);
+            console.log("RDF : ", rdfresponse);
 
             const requestBody = {
                 ReqStudent: stdid,
@@ -79,33 +79,33 @@ console.log("Hello from handle p1");
 
             const res = await axios.get(`http://localhost:8080/api/auth/guide/getmailfromid/${gid}`);
 
-            let today=new Date();
-    
-    
-    setNotification({
-        senderId:useremail,
-        receiverId:res.data,
-        createdAt:today,
-        type:'New Request',
-        link:'http://localhost:5173/mentorprofile/request'
-});
+            let today = new Date();
 
-        const response=axios.post('http://localhost:8080/api/auth/notification',notification);
-        if((await response).status===200){
-          console.log('Notification send');
-          setSendSuccess(true);
-          setSendError(false);
-        }
-        else{
-            setSendError(true);
-            setSendSuccess(false);
-        }
-        console.log(notification);
-        
-    
 
-           
-        setSubmitMessage("Request Sent Successfully");
+            setNotification({
+                senderId: useremail,
+                receiverId: res.data,
+                createdAt: today,
+                type: 'New Request',
+                link: 'http://localhost:5173/mentorprofile/request'
+            });
+
+            const response = axios.post('http://localhost:8080/api/auth/notification', notification);
+            if ((await response).status === 200) {
+                console.log('Notification send');
+                setSendSuccess(true);
+                setSendError(false);
+            }
+            else {
+                setSendError(true);
+                setSendSuccess(false);
+            }
+            console.log(notification);
+
+
+
+
+            setSubmitMessage("Request Sent Successfully");
             setSuccessGuide(gid); // Set the guide for which the request was sent successfully
         } catch (error) {
             console.error('Error while handling request:', error);
@@ -116,6 +116,25 @@ console.log("Hello from handle p1");
         <div className="rg-main-bg">
             <h3 className="rg-heading">Explore Guides for your Dissertation</h3>
             <hr />
+            {/* <div>
+
+                {successGuide === guide.guideId && (
+                    <div className="alert alert-success mt-3" role="alert">
+                        {submitMessage}
+                    </div>
+                )}
+
+                {sendSuccess && (
+                    <div className="alert alert-success" role="alert">
+                        Notification sent successfully!
+                    </div>
+                )}
+                {sendError && (
+                    <div className="alert alert-danger" role="alert">
+                        Failed to send notification.
+                    </div>
+                )}
+            </div> */}
             <div className="rg-back-div">
                 {guides.map(guide => (
                     <div className="rg-card" key={guide.guideId}>
@@ -136,29 +155,11 @@ console.log("Hello from handle p1");
                                     <button className="rg-btn-disabled" id="rg-guide-connect" disabled>Connect</button>
                                 )}
                             </div>
-                            <div>
-                            
-                            {successGuide === guide.guideId && (
-                                    <div className="alert alert-success mt-3" role="alert">
-                                        {submitMessage}
-                                    </div>
-                                )}
 
-{sendSuccess && (
-            <div className="alert alert-success" role="alert">
-              Notification sent successfully!
-            </div>
-          )}
-          {sendError && (
-            <div className="alert alert-danger" role="alert">
-              Failed to send notification.
-            </div>
-                    )}
                         </div>
                     </div>
-                    </div>
                 ))}
-        </div>
+            </div>
         </div>
     );
 };
@@ -169,7 +170,7 @@ export default RequestGuide;
 // import "./RequestGuide.css";
 // import img1 from "../../assests/techo-home.png";
 // import axios from "axios";
-// import { useNavigate } from "react-router-dom"; 
+// import { useNavigate } from "react-router-dom";
 // import { useAuth } from "../../AuthContext";
 
 // const RequestGuide = () => {
