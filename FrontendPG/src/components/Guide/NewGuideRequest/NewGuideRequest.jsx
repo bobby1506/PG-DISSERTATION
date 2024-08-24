@@ -162,6 +162,7 @@ const NewGuideRequest = () => {
   };
 
   return (
+    <div className="common-pg-contents">
     <div id="New_request">
       {submitMessage && (
         <div className="alert alert-success mt-3" role="alert">
@@ -203,7 +204,7 @@ const NewGuideRequest = () => {
             </div>
           ))}
       </div>
-    </div>
+    </div></div>
   );
 };
 

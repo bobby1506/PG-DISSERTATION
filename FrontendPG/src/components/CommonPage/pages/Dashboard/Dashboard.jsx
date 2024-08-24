@@ -85,6 +85,7 @@ setStudentDetails({
     }
   };
 
+  console.log(studentDetails.drem)
 
   const day = 75;
   const totalDays = 300;

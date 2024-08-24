@@ -130,11 +130,11 @@ const Progress = () => {
       <div className="container common-pg-progress-section row">
        
           <div>
-            <div className="common-pg-progress-circles row col-sm-12 container">
+            {/* <div className="common-pg-progress-circles row col-sm-12 container">
               <div className='common-pg-progress-ring col-sm-3'><CircularProgressBar percentage={creditProgress} />CR Progress</div>
               <div className='common-pg-progress-ring col-sm-3'><CircularProgressBar percentage={pendingProgress} />Pending Tasks</div>
               <div className='common-pg-progress-ring col-sm-3'><CircularProgressBar percentage={completeProgress} />Completed Tasks</div>
-            </div>
+            </div> */}
             {/* <div className="common-pg-timeline-div  col-sm-12 col-md-12 col-lg-12">
               <div className="common-pg-time-line">
                 <ul>

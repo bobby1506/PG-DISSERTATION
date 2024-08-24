@@ -26,8 +26,7 @@
 }
 
 .sidebarNavItem {
-  padding-top: 20px;
-  padding-bottom: 20px;
+ padding: .5rem .3rem;
   text-align: center;
   color: rgb(32, 32, 32);
   text-decoration: none;
@@ -88,6 +87,8 @@
 
 .sidebarParent {
   position: relative;
+  top: 2.5rem;
+  position: fixed;
 }
 
 
@@ -98,12 +99,15 @@
   flex-direction: column;
   gap: var(--hamburger-gap);
   width: max-content;
-  position: absolute;
-  top: calc( var(--bar-width));
-  left: calc(var(--bar-width));
+  /* position: absolute; */
+  position: relative;
+  top: 3rem;
+  left: 1.5rem;
+  /* top: calc( var(--bar-width));
+  left: calc(var(--bar-width)); */
   cursor: pointer;
   z-index: 2;
-  position: fixed;
+  /* position: fixed; */
   color: var(--secondary-color-2);
 }
 
@@ -232,7 +236,7 @@
 
 
 .sidebarAddWork{
-  margin: 2rem 0.2rem 1rem 0.2rem;
+  margin: 0rem 0.2rem 1rem 0.2rem;
   background: var(--secondary-color-2);
   background: white;
   /* font-size: 1rem; */

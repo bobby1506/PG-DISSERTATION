@@ -186,6 +186,7 @@ const OngoingGuideDissertation = () => {
     
     }
     return (
+        <div className="common-pg-contents">
         <div id="New_request">
             {/* <div className="guidereq_head">
                 <div className="guidereq_img">
@@ -257,7 +258,7 @@ const OngoingGuideDissertation = () => {
 )}
 
             </div>
-        </div>
+        </div></div>
     );
 }
 
