@@ -1,6 +1,5 @@
 package com.example.Backend.repository;
 
-import com.example.Backend.model.Tasks;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import com.example.Backend.model.Task;

@@ -3,24 +3,16 @@ package com.example.Backend.controller;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.Backend.model.Events;
-import com.example.Backend.model.Notes;
 import com.example.Backend.repository.EventsRepo;
 import com.example.Backend.repository.NotesRepo;
 import com.example.Backend.service.EventsService;
 import com.example.Backend.service.NotesService;
 
-import java.util.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;

@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.Backend.model.Notification;
-import com.example.Backend.repository.NotificationRepository;
 import com.example.Backend.service.NotificationService;
 
 

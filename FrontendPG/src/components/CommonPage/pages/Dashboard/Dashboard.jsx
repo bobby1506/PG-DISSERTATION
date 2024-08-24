@@ -16,14 +16,14 @@ const Profile = () => {
   const [progress, setProgress] = useState([]);
   const [completeTasks, setCompleteTasks] = useState(0);
   const [totalTasks, setTotalTasks] = useState(0);
-  const [credits,setCredits]=useState(0);
-  const [totalCredits,setTotalCredits]=useState(0);
-  const [studentDetails , setStudentDetails] = useState({});
+  const [credits, setCredits] = useState(0);
+  const [totalCredits, setTotalCredits] = useState(0);
+  const [studentDetails, setStudentDetails] = useState({});
 
   const { studentid } = useParams();
-  const{userRole} = useAuth();
-  console.log("Role : ",userRole);
-  console.log("student id coming from dashboard : ",studentid);
+  const { userRole } = useAuth();
+  console.log("Role : ", userRole);
+  console.log("student id coming from dashboard : ", studentid);
   const MyLottieAnimation = () => {
     const defaultOptions = {
       loop: true,
@@ -40,47 +40,45 @@ const Profile = () => {
     fetchStudent();
   }, [studentid]);
 
-  const fetchStudent = async()=>{
-    try
-    {
-      console.log("Checking id : ",studentid);
+  const fetchStudent = async () => {
+    try {
+      console.log("Checking id : ", studentid);
       const dissresp = await axios.get(`http://localhost:8080/api/auth/dissertations/getmydissertation/${studentid}`);
       console.log(dissresp.data);
 
       const studentval = dissresp.data.studentId;
-      console.log("STUDENT FROM DISSERTATION : ",studentval);
+      console.log("STUDENT FROM DISSERTATION : ", studentval);
 
       const stdresp = await axios.get(`http://localhost:8080/api/auth/student/getmongoid/${studentval}`);
       console.log(stdresp.data);
 
-      
+
 
       // Calculate end date
-const endDate = new Date(
-  new Date(studentDetails.dstart).getTime() + 365 * 24 * 60 * 60 * 1000
-);
+      const endDate = new Date(
+        new Date(studentDetails.dstart).getTime() + 365 * 24 * 60 * 60 * 1000
+      );
 
-// Calculate difference in milliseconds between end date and today's date
-const timeDifference = endDate.getTime() - new Date().getTime();
+      // Calculate difference in milliseconds between end date and today's date
+      const timeDifference = endDate.getTime() - new Date().getTime();
 
-// Convert milliseconds to days
-const daysRemaining = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
-console.log("TIME : ",daysRemaining);
+      // Convert milliseconds to days
+      const daysRemaining = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+      console.log("TIME : ", daysRemaining);
 
-setStudentDetails({
-  name : stdresp.data.name,
-  branch : stdresp.data.branch,
-  dname : dissresp.data.dissertationName,
-  ddesc : dissresp.data.dissertationDesc,
-  dstart : dissresp.data.drtstartDate,
-  dend : endDate,
-  drem : daysRemaining,
-  image : stdresp.data.image_url
-});
+      setStudentDetails({
+        name: stdresp.data.name,
+        branch: stdresp.data.branch,
+        dname: dissresp.data.dissertationName,
+        ddesc: dissresp.data.dissertationDesc,
+        dstart: dissresp.data.drtstartDate,
+        dend: endDate,
+        drem: daysRemaining,
+        image: stdresp.data.image_url
+      });
 
     }
-    catch(error)
-    {
+    catch (error) {
       console.log("Error while fetching student details in common page dashboard :", error);
     }
   };
@@ -122,7 +120,7 @@ setStudentDetails({
             // return formattedDateForComparison === noteDate.toISOString().slice(0, 10);
             const noteDate = new Date(item.date);
             noteDate.setDate(noteDate.getDate() - 1); // Subtract one day
-            eventDates.push(noteDate.toDateString());
+            // eventDate.push(noteDate.toDateString());
           }
           return false;
         }).slice(0, 3);
@@ -197,14 +195,14 @@ setStudentDetails({
       <ol className="breadcrumb">
         <li className="breadcrumb-item">
           {/* <Link to={`/studentdashboard/${studentid}`}>Student</Link> */}
-          { userRole === 'guide' ? (
-                            <Link to="#">Student</Link>
+          {userRole === 'guide' ? (
+            <Link to="#">Student</Link>
 
-                        ) : (
-                          <Link to={`/studentdashboard/${studentid}`}>Student</Link>
+          ) : (
+            <Link to={`/studentdashboard/${studentid}`}>Student</Link>
 
-                        )}
-          </li>
+          )}
+        </li>
         <li className="breadcrumb-item active" aria-current="page">Dissertation</li>
       </ol>
     </nav>
@@ -221,7 +219,7 @@ setStudentDetails({
 
         </div>
 
-        
+
 
         <div className="common-pg-project-overviews col-sm-12 col-md-2 col-lg-2">Project: <p id="common-pg-project-name">{studentDetails.dname}</p></div>
         <div className="common-pg-project-overviews col-sm-12 col-md-2 col-lg-2">
@@ -238,22 +236,22 @@ setStudentDetails({
       </div>
       <div className=' common-pg-additional-div'>
         <div className=" common-pg-project-details">
-          <p style={{fontWeight:"bold"}}>Description </p>
+          <p style={{ fontWeight: "bold" }}>Description </p>
           <p>{studentDetails.ddesc}</p>
-          <p><span style={{fontWeight:"bold"}}>Start Date:</span> <span>{new Date(studentDetails.dstart).toLocaleDateString('en-US', {
-                        day: 'numeric',
-                        month: 'long',
-                        year: 'numeric'
-                      })}&nbsp;&nbsp;&nbsp;</span> <span style={{fontWeight:"bold"}}>End Date: </span>{" "}
-                      <span>
-                        {new Date(
-                          new Date(studentDetails.dstart).getTime() + 365 * 24 * 60 * 60 * 1000
-                        ).toLocaleDateString("en-US", {
-                          day: "numeric",
-                          month: "long",
-                          year: "numeric"
-                        })}
-                      </span></p>
+          <p><span style={{ fontWeight: "bold" }}>Start Date:</span> <span>{new Date(studentDetails.dstart).toLocaleDateString('en-US', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+          })}&nbsp;&nbsp;&nbsp;</span> <span style={{ fontWeight: "bold" }}>End Date: </span>{" "}
+            <span>
+              {new Date(
+                new Date(studentDetails.dstart).getTime() + 365 * 24 * 60 * 60 * 1000
+              ).toLocaleDateString("en-US", {
+                day: "numeric",
+                month: "long",
+                year: "numeric"
+              })}
+            </span></p>
         </div>
         <div className="common-pg-task-details row">
           <div className=" common-pg-overall-progress col-sm-12 col-md-6 col-lg-6">

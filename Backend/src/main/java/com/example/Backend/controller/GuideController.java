@@ -2,7 +2,6 @@ package com.example.Backend.controller;
 
 import java.util.*;
 
-import com.example.Backend.model.GuideAvailibility;
 import com.example.Backend.repository.GuideRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

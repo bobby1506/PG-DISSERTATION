@@ -1,12 +1,10 @@
 package com.example.Backend.controller;
 
-import com.example.Backend.model.Guide;
 import com.example.Backend.model.GuideAvailibility;
 import com.example.Backend.repository.AvailRepository;
 import com.example.Backend.repository.GuideRepository;
 import com.example.Backend.service.AvailService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

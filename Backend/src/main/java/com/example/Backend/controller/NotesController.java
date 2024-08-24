@@ -1,6 +1,5 @@
 package com.example.Backend.controller;
 
-import com.example.Backend.model.Events;
 import com.example.Backend.model.Notes;
 import com.example.Backend.repository.NotesRepo;
 import com.example.Backend.service.NotesService;
@@ -9,7 +8,6 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
