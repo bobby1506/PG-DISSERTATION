@@ -83,23 +83,21 @@ const DetailedSubmission = () => {
         type: 'Task Feedback',
         link: `http://localhost:5173/${studentid}/studentguide/submissions`
       }
-      // const formData = new FormData();
-      // formData.append('guideFeedback', feedback);
 
       await fetch(`http://localhost:8080/${studentid}/submissions/${taskid}/${submissionid}/feedback`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
         },
-        body:  feedback
+        body: JSON.stringify({ guideFeedback: feedback })
       });
       setFeedback('');
       setShowSuccessAlert(true);
       setShowErrorAlert(false);
       console.log('Feedback submitted successfully');
-      const response = axios.post('http://localhost:8080/api/auth/notification', notification);
-      console.log((await response).data);
-      if (response.OK) {
+      const response = await axios.post('http://localhost:8080/api/auth/notification', notification);
+      console.log(response.data);
+      if (response.status === 200) {
         console.log("Notification added!")
       }
     } catch (error) {

@@ -7,7 +7,9 @@ import {useParams} from 'react-router-dom';
 const GuideDashboard = () => {
     const [guides,setGuides]=useState(null);
     const [loading, setLoading] = useState(true);
+    const [mentoredCount, setMentoredCount] = useState(0);
     const {useremail}=useAuth();
+    
     useEffect(()=>{
         const fetchData=async()=>{
             setLoading(true)
@@ -15,13 +17,26 @@ const GuideDashboard = () => {
                 const response=await axios.get(`http://localhost:8080/api/auth/guide/guideEmail/${useremail}`)
                 setGuides(response.data);
                 console.log(response);
+                
+                // Fetch count of students mentored
+                if (response.data && response.data.length > 0) {
+                    const guideId = response.data[0].guideId;
+                    try {
+                        const dissertationsResponse = await axios.get(`http://localhost:8080/api/auth/dissertations/getmyguidedissertation/${guideId}`);
+                        if (dissertationsResponse.data !== "No Record Available Currently") {
+                            setMentoredCount(dissertationsResponse.data.length);
+                        }
+                    } catch (error) {
+                        console.log("Error fetching dissertations:", error);
+                    }
+                }
             } catch (error) {
                 console.log(error)
             }
             setLoading(false);
         };
         fetchData();
-    },[]);
+    },[useremail]);
     if (loading) {
         return <div>Loading...</div>;
     
@@ -64,7 +79,7 @@ const GuideDashboard = () => {
                                 <p>Academic Qualifications: <input type="text" name="" id="" value={guides.academicQualification} readOnly /></p>
                                 <p>Years of Experience: <input type="text" name="" id="" value={guides.yearOfExperience} readOnly /></p>
                                 <p>Area of Specialization: <input type="text" name="" id="" value={guides.areaOfSpecialization} readOnly /></p>
-                                <p>Students Mentored: <input type="text" name="" id="" value={'Around 70'} readOnly /></p>
+                                <p>Students Mentored: <input type="text" name="" id="" value={mentoredCount} readOnly /></p>
                             </div>
    
                         </div>

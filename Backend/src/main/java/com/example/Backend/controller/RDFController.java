@@ -66,7 +66,7 @@ public class RDFController {
 
     @PutMapping("/editRDF/{rdfid}")
     public ResponseEntity<String> updateRDF(@PathVariable("rdfid") String rdfId, @RequestBody RequestDForm updatedRDF) {
-        Optional<RequestDForm> form = rdfrepo.findByStudentId(rdfId);
+        Optional<RequestDForm> form = rdfrepo.findById(rdfId);
         if (!form.isPresent()) {
             return ResponseEntity.notFound().build();
         }

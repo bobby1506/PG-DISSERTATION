@@ -54,9 +54,10 @@ const Profile = () => {
 
 
 
-      // Calculate end date
+      // Calculate end date using the start date from API response
+      const startDate = new Date(dissresp.data.drtstartDate);
       const endDate = new Date(
-        new Date(studentDetails.dstart).getTime() + 365 * 24 * 60 * 60 * 1000
+        startDate.getTime() + 365 * 24 * 60 * 60 * 1000
       );
 
       // Calculate difference in milliseconds between end date and today's date

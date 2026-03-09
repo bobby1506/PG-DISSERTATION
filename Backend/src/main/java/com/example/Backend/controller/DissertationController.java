@@ -89,13 +89,17 @@ public class DissertationController {
 //    }
 
     @PutMapping("/changedstatus/{stdid}")
-    public String change(@PathVariable("stdid") String sid)
+    public ResponseEntity<?> change(@PathVariable("stdid") String sid)
     {
         Optional<Dissertation> d = dissrepo.findByStudentId(sid);
+        
+        if(!d.isPresent()) {
+            return new ResponseEntity<>("Dissertation not found for student", HttpStatus.NOT_FOUND);
+        }
+        
         Dissertation dd = d.get();
-
         dd.setDissertationStatus("Completed");
         dissrepo.save(dd);
-        return "STATUS CHANGED FOR DISSERTATION";
+        return new ResponseEntity<>("STATUS CHANGED FOR DISSERTATION", HttpStatus.OK);
     }
 }

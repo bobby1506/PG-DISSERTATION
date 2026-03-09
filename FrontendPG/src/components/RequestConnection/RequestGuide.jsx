@@ -135,6 +135,7 @@ const RequestGuide = () => {
                     </div>
                 )}
             </div> */}
+           { console.log("Guides : ", guides)}
             <div className="rg-back-div">
                 {guides.map(guide => (
                     <div className="rg-card" key={guide.guideId}>

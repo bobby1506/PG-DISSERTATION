@@ -3,6 +3,8 @@ package com.example.Backend.controller;
 import java.util.*;
 
 import com.example.Backend.repository.GuideRepository;
+
+import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -58,23 +60,27 @@ public List<Guide> getGuideByEmail(@PathVariable String email){
 }
 
     @GetMapping("/getidbymail/{gmail}")
-    public String giveid(@PathVariable("gmail") String gm)
+    public ResponseEntity<?> giveid(@PathVariable("gmail") String gm)
     {
         Optional<Guide> g = grepo.findByEmail(gm);
 
         if(g.isPresent())
         {
-            return g.get().getId();
+            return ResponseEntity.ok(g.get().getId());
         }
 
-        return "KUCH NAHI MILA";
+        return ResponseEntity.status(HttpStatus.SC_NOT_FOUND).body("Guide not found");
     }
 
     @GetMapping("/getmailfromid/{gid}")
-    public String getmail(@PathVariable("gid") String gId)
+    public ResponseEntity<?> getmail(@PathVariable("gid") String gId)
     {
         Optional<Guide> guide = grepo.findById(gId);
+        
+        if(!guide.isPresent()) {
+            return ResponseEntity.status(HttpStatus.SC_NOT_FOUND).body("Guide not found");
+        }
 
-        return guide.get().getEmail();
+        return ResponseEntity.ok(guide.get().getEmail());
     }
 }

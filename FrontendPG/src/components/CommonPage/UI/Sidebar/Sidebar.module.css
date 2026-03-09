@@ -11,6 +11,7 @@
   top: 0;
   padding-top: calc(var(--hamburger-height) + var(--hamburger-margin) );
   /* overflow-y: scroll; */
+  overflow-x: hidden;
 }
 
 .btnDiv {
@@ -30,6 +31,10 @@
   text-align: center;
   color: rgb(32, 32, 32);
   text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  white-space: nowrap;
 }
 
 .sidebarNavItem:hover {
@@ -67,17 +72,25 @@
   padding: 5%;
   border-radius: 10px;
   margin-left: 23px !important;
+  flex-shrink: 0;
+  min-width: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .sidebarMenuDiv {
   display: flex;
   align-items: center;
+  width: 100%;
 }
 
 .sidebarMenuText {
   margin-left: 10%;
   opacity: 0;
   transition: .2s;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 
@@ -158,7 +171,7 @@
 
 .hamburger-menu:has(input:checked)+.sidebar {
   transition: .3s;
-  width: 210px;
+  width: 250px;
 }
 
 

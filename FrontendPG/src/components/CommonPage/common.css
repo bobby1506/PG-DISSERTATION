@@ -21,7 +21,8 @@ p {
 .common-pg-contents {
     max-width: 90vw;
     margin-top: 5rem;
-    margin-left: 5.3rem;
+    margin-left: 7rem;
+    padding-right: 1rem;
 }
 
 .navbar {
